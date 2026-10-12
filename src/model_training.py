@@ -1,0 +1,74 @@
+import pandas as pd
+import mlflow.sklearn
+import joblib
+from pipeline_LGBMRegressor import pipeline_lgbm_regressor
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
+
+df_store = pd.read_csv("Files/store_sales.csv")
+
+split_date = "2017-07-15"
+
+train = df_store[df_store["date"] < split_date]
+test = df_store[df_store["date"] >= split_date]
+
+y_train = train["sales"].values.reshape(-1)
+X_train = train.drop(columns=train[["date", "sales"]])
+
+y_test = test["sales"].values.reshape(-1)
+X_test = test.drop(columns=test[["date", "sales"]])
+
+X_test.to_csv('prediction_test.csv', index=False)
+
+numeric_list = ["onpromotion", "cluster", "month", "day", "day_of_week", "year"]
+category_list = ["family", "city", "state", "type", "holiday", "is_weekend", "is_month_end", "store_nbr"]
+
+X_train.to_csv("reference.csv", index=False)
+joblib.dump(X_train.columns.to_list(), filename="Files/features_name.pkl")
+
+pipeline = pipeline_lgbm_regressor(numeric_features=numeric_list, category_features=category_list)
+
+pipeline.fit(X_train, y_train)
+
+predict_test = pipeline.predict(X_test)
+
+r2 = r2_score(y_test, predict_test)
+mae = mean_absolute_error(y_test, predict_test)
+mse = root_mean_squared_error(y_test, predict_test)
+
+skops_trusted_types = [
+    'imblearn.over_sampling._smote.base.SMOTE',
+    'imblearn.pipeline.Pipeline',
+    'sklearn.metrics._dist_metrics.EuclideanDistance64',
+    'sklearn.neighbors._kd_tree.KDTree',
+    'collections.OrderedDict',
+    'lightgbm.basic.Booster',
+    'lightgbm.sklearn.LGBMRegressor',
+    'numpy.dtype'
+]
+
+mlflow.lightgbm.autolog()
+tracking_uri = "http://127.0.0.1:5000"
+mlflow.set_tracking_uri(tracking_uri)
+mlflow.set_experiment("StoreSalesTimeSeries")
+
+with mlflow.start_run():
+    params = {"n_estimators": 200, "objective": "tweedie", "tweedie_variance_power": 1.2, "learning_rate": 0.3}
+
+    mlflow.log_params(params)
+    mlflow.log_metric("r2_score", r2)
+    mlflow.log_metric("mae", mae)
+    mlflow.log_metric("mse", mse)
+
+    mlflow.sklearn.log_model(
+        sk_model=pipeline,
+        skops_trusted_types=skops_trusted_types,
+        name="LightgbmRegressor_model",
+        registered_model_name="LightgbmRegressor",
+    )
+
+    print(f"✅ Success! Model logged via mlflow.")
+
+model_uri = "models:/LightgbmRegressor/latest"
+download_path = "./LgbmRegressor_folder"
+
+mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path=download_path)
