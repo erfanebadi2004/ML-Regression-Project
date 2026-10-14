@@ -2,6 +2,11 @@ from typing import List
 from pydantic import BaseModel
 
 class FeaturesInput(BaseModel):
+
+    """
+    اعتبار سنجی ویژگی های یک نمونه برای جلوگیری از ورود داده ها با ساختار نادرست به مدل
+    """
+
     store_nbr: int
     family: object
     onpromotion: int
@@ -18,4 +23,9 @@ class FeaturesInput(BaseModel):
     is_month_end: int
 
 class BatchPredictionRequest(BaseModel):
+
+    """
+    تعیین کردن ساختار داده های ورودی به مدل و مقدار متناظر با فیلد sample لیستی از شی FeaturesInput است
+    """
+
     samples: List[FeaturesInput]
