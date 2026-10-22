@@ -1,0 +1,9 @@
+Files/prediction_test.csv
+Files/prediction_test.csv.dvc
+Files/store_sales.csv
+Files/store_sales.csv.dvc
+Files/app_logging.log
+Files/.gitignore
+mlflow.db
+test_model.py
+Readme.md
