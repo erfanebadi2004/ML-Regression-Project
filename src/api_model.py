@@ -9,7 +9,7 @@ from monitoring_data import check_data_drift
 
 # تنظیم سیستم logging برای ذخیره و نمایش گزارش ها در زمان اجرا برنامه در محیط سرور
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-                    handlers=[logging.FileHandler("app_logging.log"), logging.StreamHandler()])
+                    handlers=[logging.FileHandler("Files/app_logging.log"), logging.StreamHandler()])
 
 logger = logging.getLogger("LightGBM Regressor ApiModel")
 
@@ -59,16 +59,20 @@ async def predict_lgbm_regressor(request: BatchPredictionRequest, background_tas
 
         # انتخاب ستون های مورد نیاز و مرتب سازی بر اساس ترتیب نام ستون های feature_name
         df = df_samples[features_name]
+        min_sample = 50
+
+        if len(df) > min_sample:
+            # ثبت وظایف در پس زمینه برای بررسی انحراف داده drift
+            background_tasks.add_task(check_data_drift, reference_df, df)
+        else:
+            logger.info("The number of samples is lower than the threshold expected for data monitoring .")
 
         # انجام فرایند پیش بینی توسط مدل
         predict_model = LGBM_model.predict(df)
 
         result = predict_model.tolist()
 
-        # ثبت وظایف در پس زمینه برای بررسی انحراف داده drift
-        background_tasks.add_task(check_data_drift, reference_df, df)
-
-        return result
+        return {"prediction result" : result}
 
     except Exception as E:
         logger.error(f"Error during the prediction process: {str(E)}")

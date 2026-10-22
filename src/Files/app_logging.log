@@ -1,0 +1,5 @@
+2026-10-23 00:24:48,431 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\LgbmRegressor_folder
+2026-10-23 00:25:53,420 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\LgbmRegressor_folder
+2026-10-23 00:26:17,176 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\LgbmRegressor_folder
+2026-10-23 00:30:43,460 - LightGBM Regressor ApiModel - INFO - The number of samples is lower than the threshold expected for data monitoring .
+2026-10-23 00:31:53,267 - watchfiles.main - INFO - 1 change detected
