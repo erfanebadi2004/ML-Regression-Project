@@ -1,23 +1,27 @@
+import skops.io as sio
 import logging
 import joblib
 import pandas as pd
-import mlflow.pyfunc
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from validation import BatchPredictionRequest
 from pathlib import Path
 from monitoring_data import check_data_drift
 
+# تعیین مسیر فایل های مدل و داده های مرجع و نام ستون ها
+BASE_DIR = Path(__file__).resolve().parent.parent
+FEATURE_PATH = BASE_DIR / "Files" / "features_name.pkl"
+REFERENCE_PATH = BASE_DIR / "Files" / "reference.csv"
+LOG_FILE_PATH = BASE_DIR / "Files" / "app_logging.log"
+MODEL_PATH = BASE_DIR / "LgbmRegressor_folder" / "model.skop"
+
 # تنظیم سیستم logging برای ذخیره و نمایش گزارش ها در زمان اجرا برنامه در محیط سرور
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-                    handlers=[logging.FileHandler("Files/app_logging.log"), logging.StreamHandler()])
+                    handlers=[logging.FileHandler(LOG_FILE_PATH), logging.StreamHandler()])
 
 logger = logging.getLogger("LightGBM Regressor ApiModel")
 
-# تعیین مسیر فایل های مدل و داده های مرجع و نام ستون ها
-BASE_DIR = Path(__file__).resolve().parent.parent
-FEATURE_PATH = BASE_DIR / "src" / "./Files" / "features_name.pkl"
-REFERENCE_PATH = BASE_DIR / "src" / "./Files" / "reference.csv"
-MODEL_PATH = BASE_DIR / "src" / "./LgbmRegressor_folder"
+reference_df = None
+LGBM_model = None
 
 # بارگزاری داده های مرجع reference و نام ستون ها قبل از شروع کار API برای جلوگیری از خواندن مجدد فایل ها در محیط سرور
 try:
@@ -28,9 +32,17 @@ try:
 except Exception as e:
         logger.error(f"Critical error: Reference data failed to load. {REFERENCE_PATH}: {str(e)}")
 
-# بارگزاری مدل light gbm regressor از MLFlow
+#بارگزاری مدل lightgbmRegressor با استفاده از skops برای جلوگیری از نفود فایل های مخرب به سیستم
 try:
-    LGBM_model = mlflow.pyfunc.load_model(MODEL_PATH)
+    LGBM_model = sio.load(MODEL_PATH, trusted=['imblearn.over_sampling._smote.base.SMOTE',
+    'imblearn.pipeline.Pipeline',
+    'sklearn.metrics._dist_metrics.EuclideanDistance64',
+    'sklearn.neighbors._kd_tree.KDTree',
+    'collections.OrderedDict',
+    'lightgbm.basic.Booster',
+    'lightgbm.sklearn.LGBMRegressor',
+    'numpy.dtype'])
+
     logger.info(f"Model loaded successfully: {MODEL_PATH}")
 
 except Exception as error:
@@ -42,6 +54,8 @@ app = FastAPI(title="LGBMRegressorModel_API")
 # تعریف مسیر endpoint برای دریافت درخواست های پیش بینی
 @app.post("/predict")
 async def predict_lgbm_regressor(request: BatchPredictionRequest, background_tasks: BackgroundTasks):
+    global reference_df
+    global LGBM_model
 
     # بررسی مدل بارگزاری شده برای زمانی که مدل به درستی بارگزاری نشده خطا 500 برمیگرداند
     if LGBM_model is None:
