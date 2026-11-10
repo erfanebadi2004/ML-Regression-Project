@@ -1,7 +1,5 @@
 import pytest
 from fastapi.testclient import TestClient
-from nltk.chat.zen import responses
-
 from api_model import app
 
 client = TestClient(app)
