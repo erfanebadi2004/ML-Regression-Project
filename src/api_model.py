@@ -1,6 +1,5 @@
 import skops.io as sio
 import logging
-import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from validation import BatchPredictionRequest
@@ -8,11 +7,10 @@ from pathlib import Path
 from monitoring_data import check_data_drift
 
 # تعیین مسیر فایل های مدل و داده های مرجع و نام ستون ها
-BASE_DIR = Path(__file__).resolve().parent.parent
-FEATURE_PATH = BASE_DIR / "Files" / "features_name.pkl"
+BASE_DIR = Path(__file__).resolve().parent
 REFERENCE_PATH = BASE_DIR / "Files" / "reference.csv"
 LOG_FILE_PATH = BASE_DIR / "Files" / "app_logging.log"
-MODEL_PATH = BASE_DIR / "LgbmRegressor_folder" / "model.skop"
+MODEL_PATH = BASE_DIR / "NewLgbmRegressor_folder" / "model.skops"
 
 # تنظیم سیستم logging برای ذخیره و نمایش گزارش ها در زمان اجرا برنامه در محیط سرور
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -22,13 +20,13 @@ logger = logging.getLogger("LightGBM Regressor ApiModel")
 
 reference_df = None
 LGBM_model = None
+model_is_loaded = None
 
 # بارگزاری داده های مرجع reference و نام ستون ها قبل از شروع کار API برای جلوگیری از خواندن مجدد فایل ها در محیط سرور
 try:
     reference_df = pd.read_csv(REFERENCE_PATH)
+    logger.info("Reference data loaded successfully")
 
-    with open(FEATURE_PATH, "rb") as features:
-        features_name = joblib.load(features)
 except Exception as e:
         logger.error(f"Critical error: Reference data failed to load. {REFERENCE_PATH}: {str(e)}")
 
@@ -51,9 +49,32 @@ except Exception as error:
 # راه اندازی اپلیکیشن FastAPI
 app = FastAPI(title="LGBMRegressorModel_API")
 
+# بررسی سلامت وضعیت API و مدل بارگزاری شده
+@app.get("/health")
+def health_check():
+    global model_is_loaded
+
+    if LGBM_model is None:
+        model_is_loaded = False
+
+        raise HTTPException(
+            status_code=500,
+            detail = "The model failed to load!"
+        )
+
+    else:
+        model_is_loaded = True
+
+        return {
+            "status_code": 200,
+            "status": "Healthy",
+            "model_loaded": model_is_loaded,
+            "message": "API is up and running smoothly"}
+
+
 # تعریف مسیر endpoint برای دریافت درخواست های پیش بینی
 @app.post("/predict")
-async def predict_lgbm_regressor(request: BatchPredictionRequest, background_tasks: BackgroundTasks):
+def predict_lgbm_regressor(request: BatchPredictionRequest, background_tasks: BackgroundTasks):
     global reference_df
     global LGBM_model
 
@@ -71,18 +92,16 @@ async def predict_lgbm_regressor(request: BatchPredictionRequest, background_tas
         # داده های دریافتی که توسط pydantic اعتبار سنجی شده به DataFrame تبدیل میشوند
         df_samples = pd.DataFrame([s.model_dump() for s in request.samples])
 
-        # انتخاب ستون های مورد نیاز و مرتب سازی بر اساس ترتیب نام ستون های feature_name
-        df = df_samples[features_name]
         min_sample = 50
 
-        if len(df) > min_sample:
+        if len(df_samples) > min_sample:
             # ثبت وظایف در پس زمینه برای بررسی انحراف داده drift
-            background_tasks.add_task(check_data_drift, reference_df, df)
+            background_tasks.add_task(check_data_drift, reference_df, df_samples)
         else:
             logger.info("The number of samples is lower than the threshold expected for data monitoring .")
 
         # انجام فرایند پیش بینی توسط مدل
-        predict_model = LGBM_model.predict(df)
+        predict_model = LGBM_model.predict(df_samples)
 
         result = predict_model.tolist()
 

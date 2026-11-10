@@ -33,8 +33,8 @@ X_test = test.drop(columns=test[["date", "sales"]])
 X_test.to_csv('prediction_test.csv', index=False)
 
 # تعریف لیست ویژگی های عددی و دسته ای برای استفاده در pipeline
-numeric_list = ["onpromotion", "cluster", "month", "day", "day_of_week", "year"]
-category_list = ["family", "city", "state", "type", "holiday", "is_weekend", "is_month_end", "store_nbr"]
+numeric_list = ["onpromotion", "cluster", "month", "day"]
+category_list = ["family", "city", "state", "type", "holiday", "is_weekend", "is_month_end", "store_nbr", "year", "day_of_week"]
 
 #ذخیره داده های آموزشی به عنوان فایل مرجع برای انجام Monitoring
 # ذخیره نام ویژگی ها برای استفاده در API
@@ -95,15 +95,15 @@ with mlflow.start_run():
         sk_model=pipeline,
         skops_trusted_types=skops_trusted_types,
         name="LightgbmRegressor_model",
-        registered_model_name="LightgbmRegressor",
+        registered_model_name="NewLightgbmRegressor",
     )
     logger.info("Registering and saving the trained model")
 
     print(f"✅ Success! Model logged via mlflow.")
 
 # دانلود فایل های artifact مدل جهت استقرار مدل
-model_uri = "models:/LightgbmRegressor/latest"
-download_path = "./LgbmRegressor_folder"
+model_uri = "models:/NewLightgbmRegressor/latest"
+download_path = "./NewLgbmRegressor_folder"
 
 mlflow.artifacts.download_artifacts(artifact_uri=model_uri, dst_path=download_path)
 logger.info("Download model artifact files from MLflow.")

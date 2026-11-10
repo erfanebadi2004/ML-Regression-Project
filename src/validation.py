@@ -1,5 +1,5 @@
-from typing import List
-from pydantic import BaseModel
+from typing import List, Literal
+from pydantic import BaseModel, Field
 
 class FeaturesInput(BaseModel):
 
@@ -8,11 +8,26 @@ class FeaturesInput(BaseModel):
     """
 
     store_nbr: int
-    family: object
+    family: object = Literal['AUTOMOTIVE', 'BABY CARE', 'BEAUTY', 'BEVERAGES', 'BOOKS',
+                            'BREAD/BAKERY', 'CELEBRATION', 'CLEANING', 'DAIRY', 'DELI', 'EGGS',
+                            'FROZEN FOODS', 'GROCERY I', 'GROCERY II', 'HARDWARE',
+                            'HOME AND KITCHEN I', 'HOME AND KITCHEN II', 'HOME APPLIANCES',
+                            'HOME CARE', 'LADIESWEAR', 'LAWN AND GARDEN', 'LINGERIE',
+                            'LIQUOR,WINE,BEER', 'MAGAZINES', 'MEATS', 'PERSONAL CARE',
+                            'PET SUPPLIES', 'PLAYERS AND ELECTRONICS', 'POULTRY',
+                            'PREPARED FOODS', 'PRODUCE', 'SCHOOL AND OFFICE SUPPLIES',
+                            'SEAFOOD']
     onpromotion: int
-    city: object
-    state: object
-    type: object
+    city: object = Literal['Quito', 'Cayambe', 'Latacunga', 'Riobamba', 'Ibarra',
+                           'Santo Domingo', 'Guaranda', 'Puyo', 'Ambato', 'Guayaquil',
+                           'Salinas', 'Daule', 'Babahoyo', 'Quevedo', 'Playas', 'Libertad',
+                           'Cuenca', 'Loja', 'Machala', 'Esmeraldas', 'Manta', 'El Carmen']
+
+    state: object = Literal['Pichincha', 'Cotopaxi', 'Chimborazo', 'Imbabura',
+                            'Santo Domingo de los Tsachilas', 'Bolivar', 'Pastaza',
+                            'Tungurahua', 'Guayas', 'Santa Elena', 'Los Rios', 'Azuay', 'Loja',
+                            'El Oro', 'Esmeraldas', 'Manabi']
+    type: object = Literal['D', 'C', 'B', 'E', 'A']
     cluster: int
     holiday: int
     year: int

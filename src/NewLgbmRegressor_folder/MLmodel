@@ -1,4 +1,4 @@
-artifact_path: mlflow-artifacts:/4/models/m-50ad8cb550f94815bd0b5111de5df13b/artifacts
+artifact_path: mlflow-artifacts:/1/models/m-4d5f30decdf9472d998a9dd8425beaef/artifacts
 flavors:
   python_function:
     env:
@@ -23,9 +23,9 @@ flavors:
     - lightgbm.sklearn.LGBMRegressor
     - numpy.dtype
 mlflow_version: 3.14.0
-model_id: m-50ad8cb550f94815bd0b5111de5df13b
-model_size_bytes: 1091006
-model_uuid: m-50ad8cb550f94815bd0b5111de5df13b
+model_id: m-4d5f30decdf9472d998a9dd8425beaef
+model_size_bytes: 1108224
+model_uuid: m-4d5f30decdf9472d998a9dd8425beaef
 prompts: null
-run_id: fc557eb758f842d4821a09cb5e657387
-utc_time_created: '2026-09-17 11:24:13.228600'
+run_id: 26876e3e9d884893a1bf4d7652a4abb1
+utc_time_created: '2026-11-06 16:43:24.159444'
