@@ -1,3 +1,37 @@
 2026-11-09 00:34:14,468 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
 2026-11-09 00:36:36,381 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
 2026-11-09 00:37:07,368 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
+2026-11-11 00:21:38,493 - LightGBM Regressor ApiModel - INFO - Reference data loaded successfully
+2026-11-11 00:21:38,624 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
+2026-11-11 00:21:45,724 - LightGBM Regressor ApiModel - INFO - Reference data loaded successfully
+2026-11-11 00:21:45,751 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
+2026-11-11 00:22:26,055 - LightGBM Regressor ApiModel - INFO - Reference data loaded successfully
+2026-11-11 00:22:26,188 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
+2026-11-11 00:22:33,042 - LightGBM Regressor ApiModel - INFO - Reference data loaded successfully
+2026-11-11 00:22:33,083 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
+2026-11-11 00:23:08,532 - LightGBM Regressor ApiModel - INFO - Reference data loaded successfully
+2026-11-11 00:23:08,655 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
+2026-11-11 00:23:15,427 - LightGBM Regressor ApiModel - INFO - Reference data loaded successfully
+2026-11-11 00:23:15,455 - LightGBM Regressor ApiModel - INFO - Model loaded successfully: C:\Users\ASUS\PythonProject4\Jupyter_Notebook\store_sales\src\NewLgbmRegressor_folder\model.skops
+2026-11-11 00:23:28,579 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:23:36,028 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:23:45,791 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:24:00,520 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:24:15,549 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:24:21,205 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:24:33,566 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:24:47,927 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:24:57,428 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:25:04,394 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:25:21,206 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:25:28,959 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:25:37,061 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:25:54,377 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:26:09,459 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:26:13,468 - LightGBM Regressor ApiModel - INFO - The number of samples is lower than the threshold expected for data monitoring .
+2026-11-11 00:26:24,557 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:26:39,602 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:26:54,715 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:26:58,339 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:27:04,357 - watchfiles.main - INFO - 1 change detected
+2026-11-11 00:27:12,336 - watchfiles.main - INFO - 1 change detected

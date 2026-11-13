@@ -4,14 +4,14 @@ FROM python:${PY_VERSION}
 
 WORKDIR /app
 
-COPY requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
 RUN for i in 1 2 3; do \
         apt-get update && apt-get install -y --no-install_recommends libgomp1 && rm -rf /var/lib/apt/lists/* && break || \
         sleep 5; \
     done
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
