@@ -1,4 +1,4 @@
-ARG PY_VERSION=3.12
+ARG PY_VERSION=3.12-slim
 
 FROM python:${PY_VERSION}
 
