@@ -108,8 +108,8 @@ def predict_lgbm_regressor(request: BatchPredictionRequest, background_tasks: Ba
 
     except Exception as E:
         logger.error(f"Error during the prediction process: {str(E)}")
-<<<<<<< HEAD
+
         raise HTTPException(status_code=500,detail=f"Prediction error: {str(E)}" )
-=======
+
         raise HTTPException(status_code=500,detail=f"Prediction error: {str(E)}" )
->>>>>>> 56a61e6f17f4fe9e6d6340ff9fa1ed0a868e8ffb
+
