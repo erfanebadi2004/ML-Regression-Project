@@ -1,0 +1,13 @@
+services:
+  ml-regressor-container:
+
+    image: ml_regressor_image:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - lightgbmregressor_folder:/app/NewLgbmRegressor_folder
+      - reference_data:/app/my_reference
+
+volumes:
+    lightgbmregressor_folder:
+    reference_data:

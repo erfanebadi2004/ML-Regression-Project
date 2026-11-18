@@ -59,8 +59,6 @@ mse = root_mean_squared_error(y_test, predict_test)
 logger.info(f"r2 Score : {r2}, MAE Score : {mae}, MSE Score : {mse}")
 
 skops_trusted_types = [
-    'imblearn.over_sampling._smote.base.SMOTE',
-    'imblearn.pipeline.Pipeline',
     'sklearn.metrics._dist_metrics.EuclideanDistance64',
     'sklearn.neighbors._kd_tree.KDTree',
     'collections.OrderedDict',

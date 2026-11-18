@@ -8,7 +8,7 @@ from monitoring_data import check_data_drift
 
 # تعیین مسیر فایل های مدل و داده های مرجع و نام ستون ها
 BASE_DIR = Path(__file__).resolve().parent
-REFERENCE_PATH = BASE_DIR / "Files" / "reference.csv"
+REFERENCE_PATH = BASE_DIR / "my_reference" / "reference.csv"
 LOG_FILE_PATH = BASE_DIR / "Files" / "app_logging.log"
 MODEL_PATH = BASE_DIR / "NewLgbmRegressor_folder" / "model.skops"
 
@@ -32,8 +32,7 @@ except Exception as e:
 
 #بارگزاری مدل lightgbmRegressor با استفاده از skops برای جلوگیری از نفود فایل های مخرب به سیستم
 try:
-    LGBM_model = sio.load(MODEL_PATH, trusted=['imblearn.over_sampling._smote.base.SMOTE',
-    'imblearn.pipeline.Pipeline',
+    LGBM_model = sio.load(MODEL_PATH, trusted=[
     'sklearn.metrics._dist_metrics.EuclideanDistance64',
     'sklearn.neighbors._kd_tree.KDTree',
     'collections.OrderedDict',
@@ -110,3 +109,6 @@ def predict_lgbm_regressor(request: BatchPredictionRequest, background_tasks: Ba
     except Exception as E:
         logger.error(f"Error during the prediction process: {str(E)}")
         raise HTTPException(status_code=500,detail=f"Prediction error: {str(E)}" )
+
+# 'imblearn.over_sampling._smote.base.SMOTE',
+# 'imblearn.pipeline.Pipeline',
