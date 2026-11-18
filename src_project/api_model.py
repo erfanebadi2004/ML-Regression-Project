@@ -109,6 +109,3 @@ def predict_lgbm_regressor(request: BatchPredictionRequest, background_tasks: Ba
     except Exception as E:
         logger.error(f"Error during the prediction process: {str(E)}")
         raise HTTPException(status_code=500,detail=f"Prediction error: {str(E)}" )
-
-# 'imblearn.over_sampling._smote.base.SMOTE',
-# 'imblearn.pipeline.Pipeline',
